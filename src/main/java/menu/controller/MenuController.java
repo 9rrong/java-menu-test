@@ -1,5 +1,6 @@
 package menu.controller;
 
+import menu.model.Categories;
 import menu.model.coach.Coaches;
 import menu.view.InputView;
 import menu.view.OutputView;
@@ -26,7 +27,7 @@ public class MenuController {
                         retryUntilValid(() -> addInedibleMenusByCoachName(coachName, coaches))
                 );
 
-
+        Categories categories = Categories.ofRandomValues();
     }
 
     private void addInedibleMenusByCoachName(String coachName, Coaches coaches) {
