@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class InputView {
-    private static final String COACH_NAMES_PROMPT = "코치의 이름을 입력해 주세요. (, 로 구분)";
-    private static final String INEDIBLE_MENUS_PROMPT_FORMAT = "%s(이)가 못 먹는 메뉴를 입력해 주세요.";
+    private static final String COACH_NAMES_PROMPT = System.lineSeparator() + "코치의 이름을 입력해 주세요. (, 로 구분)";
+    private static final String INEDIBLE_MENUS_PROMPT_FORMAT = System.lineSeparator() + "%s(이)가 못 먹는 메뉴를 입력해 주세요.";
 
     public List<String> readCoachNames() {
         System.out.println(COACH_NAMES_PROMPT);

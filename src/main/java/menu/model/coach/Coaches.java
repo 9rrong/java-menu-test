@@ -1,6 +1,7 @@
 package menu.model.coach;
 
 import menu.model.Category;
+import menu.model.CoachMenusDTO;
 import menu.model.ErrorCode;
 
 import java.util.List;
@@ -21,13 +22,18 @@ public class Coaches {
         return new Coaches(
                 coachNames.stream()
                         .map(Coach::ofValue)
-                        .collect(Collectors.toUnmodifiableList())
-        );
+                        .collect(Collectors.toUnmodifiableList()));
     }
 
     public List<String> getCoachNames() {
         return coaches.stream()
                 .map(Coach::getName)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    public List<CoachMenusDTO> toCoachMenusDTOs() {
+        return coaches.stream()
+                .map(Coach::coachMenusDTO)
                 .collect(Collectors.toUnmodifiableList());
     }
 
@@ -40,7 +46,7 @@ public class Coaches {
     }
 
     public void addRandomMenusByCategory(Category category) {
-        coaches.forEach(coach -> coach.addRandomMenus(category));
+        coaches.forEach(coach -> coach.addRandomMenu(category));
     }
 
     private void validateNumberOfMenus(List<String> menus) {

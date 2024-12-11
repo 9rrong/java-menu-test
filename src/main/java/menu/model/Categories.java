@@ -27,7 +27,7 @@ public class Categories {
                 categoryList.add(randomCategory);
             }
 
-            if (categoryList.size() == 5) {
+            if (categoryList.size() == DayOfWeek.SIZE) {
                 return new Categories(categoryList);
             }
         }
@@ -46,9 +46,10 @@ public class Categories {
     }
 
     private static Category getRandomCategory() {
+        int randomInt = Randoms.pickNumberInRange(CATEGORY_MIN_INDEX, CATEGORY_MAX_INDEX);
         return Arrays.stream(Category.values())
                 .filter(category ->
-                        category.isOrderNumber(Randoms.pickNumberInRange(CATEGORY_MIN_INDEX, CATEGORY_MAX_INDEX))
+                        category.isOrderNumber(randomInt)
                 )
                 .findFirst()
                 .orElseThrow();

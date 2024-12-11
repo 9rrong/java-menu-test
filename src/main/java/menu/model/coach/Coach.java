@@ -2,6 +2,8 @@ package menu.model.coach;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import menu.model.Category;
+import menu.model.CoachMenusDTO;
+import menu.model.DayOfWeek;
 import menu.model.ErrorCode;
 
 import java.util.ArrayList;
@@ -45,22 +47,23 @@ public class Coach {
         return name.equals(value);
     }
 
-    public void addRandomMenus(Category category) {
+    public void addRandomMenu(Category category) {
         while (true) {
             String menu = Randoms.shuffle(category.getMenus()).get(0);
 
             if (checkMenu(menu)) {
                 menus.add(menu);
-            }
-
-            if (menus.size() == 5) {
                 break;
             }
         }
     }
 
+    public CoachMenusDTO coachMenusDTO() {
+        return new CoachMenusDTO(name, menus);
+    }
+
     private boolean checkMenu(String menu) {
-        return !(isDuplicated(menu) || isInedible(menu));
+        return !(isDuplicated(menu) && isInedible(menu));
     }
 
     private boolean isInedible(String menu) {

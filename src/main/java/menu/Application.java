@@ -1,6 +1,7 @@
 package menu;
 
 import menu.controller.MenuController;
+import menu.model.ResultBuilder;
 import menu.view.InputView;
 import menu.view.OutputView;
 
@@ -18,7 +19,8 @@ public class Application {
     private MenuController initializeComponents() {
         InputView inputView = new InputView();
         OutputView outputView = new OutputView();
+        ResultBuilder resultBuilder = new ResultBuilder();
 
-        return new MenuController(inputView, outputView);
+        return new MenuController(inputView, outputView, resultBuilder);
     }
 }

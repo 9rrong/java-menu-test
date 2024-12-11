@@ -25,6 +25,10 @@ public enum Category {
         return menus;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
     public static boolean isMenuExisting(String menuName) {
         return Arrays.stream(Category.values())
                 .map(menuCategory -> menuCategory.hasMenu(menuName))

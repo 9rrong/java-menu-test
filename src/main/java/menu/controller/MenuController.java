@@ -1,6 +1,7 @@
 package menu.controller;
 
 import menu.model.Categories;
+import menu.model.ResultBuilder;
 import menu.model.coach.Coaches;
 import menu.view.InputView;
 import menu.view.OutputView;
@@ -12,10 +13,12 @@ public class MenuController {
 
     private final InputView inputView;
     private final OutputView outputView;
+    private final ResultBuilder resultBuilder;
 
-    public MenuController(InputView inputView, OutputView outputView) {
+    public MenuController(InputView inputView, OutputView outputView, ResultBuilder resultBuilder) {
         this.inputView = inputView;
         this.outputView = outputView;
+        this.resultBuilder = resultBuilder;
     }
 
     public void startRecommendation() {
@@ -27,10 +30,13 @@ public class MenuController {
                         retryUntilValid(() -> addInedibleMenusByCoachName(coachName, coaches))
                 );
 
-        Categories.ofRandomValues()
-                .getCategories()
+        Categories categories = Categories.ofRandomValues();
+
+        categories.getCategories()
                 .forEach(coaches::addRandomMenusByCategory);
 
+        outputView.printResult(resultBuilder.buildResult(categories, coaches));
+        outputView.printEndMessage();
     }
 
     private void addInedibleMenusByCoachName(String coachName, Coaches coaches) {
