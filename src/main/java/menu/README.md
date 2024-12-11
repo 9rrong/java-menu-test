@@ -34,6 +34,6 @@
 
 ### 예외 처리
 
-- [ ] 사용자가 잘못된 값을 입력할 경우 IllegalArgumentException를 발생시키고, 그 부분부터 입력을 다시 받는다.
+- [x] 사용자가 잘못된 값을 입력할 경우 IllegalArgumentException를 발생시키고, 그 부분부터 입력을 다시 받는다.
     - `Exception`이 아닌 `IllegalArgumentException`, `IllegalStateException` 등과 같은 명확한 유형을 처리한다.
  
