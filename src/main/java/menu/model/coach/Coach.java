@@ -1,17 +1,22 @@
 package menu.model.coach;
 
-import menu.model.ErrorCode;
+import camp.nextstep.edu.missionutils.Randoms;
 import menu.model.Category;
+import menu.model.ErrorCode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Coach {
     private final String name;
-    private List<String> inedibleMenus;
+
+    private final List<String> menus;
+    private final List<String> inedibleMenus;
 
     public Coach(String name, List<String> inedibleMenus) {
         this.name = name;
+        this.menus = new ArrayList<>();
         this.inedibleMenus = inedibleMenus;
     }
 
@@ -21,14 +26,14 @@ public class Coach {
         return new Coach(name, new ArrayList<>());
     }
 
-    public String getName() {
-        return name;
-    }
-
     private static void validateNameLength(String name) {
         if (!(name.length() >= 2) || !(name.length() <= 4)) {
             throw new IllegalArgumentException(ErrorCode.COACH_NAME_LENGTH_OUT_OF_RANGE.getMessage());
         }
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void addInedibleMenus(List<String> inedibleMenuInputs) {
@@ -38,6 +43,36 @@ public class Coach {
 
     public boolean isName(String value) {
         return name.equals(value);
+    }
+
+    public void addRandomMenus(Category category) {
+        while (true) {
+            String menu = Randoms.shuffle(category.getMenus()).get(0);
+
+            if (checkMenu(menu)) {
+                menus.add(menu);
+            }
+
+            if (menus.size() == 5) {
+                break;
+            }
+        }
+    }
+
+    private boolean checkMenu(String menu) {
+        return !(isDuplicated(menu) || isInedible(menu));
+    }
+
+    private boolean isInedible(String menu) {
+        return inedibleMenus.stream()
+                .anyMatch(m -> Objects.equals(m, menu));
+    }
+
+    private boolean isDuplicated(String menu) {
+        long numberOfMenu = menus.stream()
+                .filter(m -> Objects.equals(m, menu))
+                .count();
+        return numberOfMenu < 1;
     }
 
     private void validateMenuInputs(List<String> inedibleMenuInputs) {

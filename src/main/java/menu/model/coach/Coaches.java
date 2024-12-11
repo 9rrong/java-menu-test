@@ -1,5 +1,6 @@
 package menu.model.coach;
 
+import menu.model.Category;
 import menu.model.ErrorCode;
 
 import java.util.List;
@@ -30,12 +31,16 @@ public class Coaches {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public void addInedibleMenuByName(String name, List<String> menus) {
+    public void addInedibleMenusByName(String name, List<String> menus) {
         validateNumberOfMenus(menus);
 
         coaches.stream()
                 .filter(coach -> coach.isName(name))
                 .forEach(coach -> coach.addInedibleMenus(menus));
+    }
+
+    public void addRandomMenusByCategory(Category category) {
+        coaches.forEach(coach -> coach.addRandomMenus(category));
     }
 
     private void validateNumberOfMenus(List<String> menus) {

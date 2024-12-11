@@ -27,12 +27,15 @@ public class MenuController {
                         retryUntilValid(() -> addInedibleMenusByCoachName(coachName, coaches))
                 );
 
-        Categories categories = Categories.ofRandomValues();
+        Categories.ofRandomValues()
+                .getCategories()
+                .forEach(coaches::addRandomMenusByCategory);
+
     }
 
     private void addInedibleMenusByCoachName(String coachName, Coaches coaches) {
         List<String> inedibleMenus = inputView.readInedibleMenus(coachName);
-        coaches.addInedibleMenuByName(coachName, inedibleMenus);
+        coaches.addInedibleMenusByName(coachName, inedibleMenus);
     }
 
     private void retryUntilValid(Runnable action) {

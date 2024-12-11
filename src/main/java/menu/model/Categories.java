@@ -22,6 +22,7 @@ public class Categories {
 
         while (true) {
             Category randomCategory = getRandomCategory();
+
             if (checkDuplicatesExceeded(categoryList, randomCategory)) {
                 categoryList.add(randomCategory);
             }
@@ -30,6 +31,10 @@ public class Categories {
                 return new Categories(categoryList);
             }
         }
+    }
+
+    public List<Category> getCategories() {
+        return categories;
     }
 
     private static boolean checkDuplicatesExceeded(List<Category> categoryList, Category randomCategory) {
