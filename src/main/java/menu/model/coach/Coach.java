@@ -1,4 +1,7 @@
-package menu.model;
+package menu.model.coach;
+
+import menu.model.ErrorCode;
+import menu.model.Category;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +42,7 @@ public class Coach {
 
     private void validateMenuInputs(List<String> inedibleMenuInputs) {
         for (String input : inedibleMenuInputs) {
-            if (!MenuCategories.isMenuExisting(input)) {
+            if (!Category.isMenuExisting(input)) {
                 throw new IllegalArgumentException(ErrorCode.MENU_NOT_FOUND.getMessage());
             }
         }

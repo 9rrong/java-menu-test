@@ -1,6 +1,6 @@
 package menu.controller;
 
-import menu.model.Coaches;
+import menu.model.coach.Coaches;
 import menu.view.InputView;
 import menu.view.OutputView;
 
@@ -25,6 +25,7 @@ public class MenuController {
                 .forEach(coachName ->
                         retryUntilValid(() -> addInedibleMenusByCoachName(coachName, coaches))
                 );
+
 
     }
 

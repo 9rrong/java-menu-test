@@ -1,4 +1,6 @@
-package menu.model;
+package menu.model.coach;
+
+import menu.model.ErrorCode;
 
 import java.util.List;
 import java.util.stream.Collectors;
