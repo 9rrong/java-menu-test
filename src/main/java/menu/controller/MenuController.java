@@ -16,7 +16,7 @@ public class MenuController {
     }
 
     public void run() {
-
+        outputView.printStartMessage();
     }
 
     private <T> T retryUntilValid(Supplier<T> supplier) {
