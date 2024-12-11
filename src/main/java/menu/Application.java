@@ -12,7 +12,7 @@ public class Application {
 
     private void run() {
         MenuController menuController = initializeComponents();
-        menuController.run();
+        menuController.startRecommendation();
     }
 
     private MenuController initializeComponents() {

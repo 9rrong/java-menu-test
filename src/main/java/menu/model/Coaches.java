@@ -20,6 +20,18 @@ public class Coaches {
         );
     }
 
+    public List<String> getCoachNames() {
+        return coaches.stream()
+                .map(Coach::getName)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    public void addInedibleMenuByName(String name, List<String> menus) {
+        coaches.stream()
+                .filter(coach -> coach.isName(name))
+                .forEach(coach -> coach.addInedibleMenus(menus));
+    }
+
     private void validateNumberOfCoaches(List<Coach> coaches) {
         if (!(coaches.size() >= 2) || !(coaches.size() <= 5)) {
             throw new IllegalArgumentException(ErrorCode.COACHES_NUMBER_OUT_OF_RANGE.getMessage());

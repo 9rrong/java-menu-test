@@ -1,8 +1,10 @@
 package menu.controller;
 
+import menu.model.Coaches;
 import menu.view.InputView;
 import menu.view.OutputView;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class MenuController {
@@ -15,12 +17,34 @@ public class MenuController {
         this.outputView = outputView;
     }
 
-    public void run() {
+    public void startRecommendation() {
         outputView.printStartMessage();
-        retryUntilValid(() -> inputView.readCoachNames());
+        Coaches coaches = retrySupplierUntilValid(() -> Coaches.ofValue(inputView.readCoachNames()));
+
+        coaches.getCoachNames()
+                .forEach(coachName ->
+                        retryUntilValid(() -> addInedibleMenusByCoachName(coachName, coaches))
+                );
+
     }
 
-    private <T> T retryUntilValid(Supplier<T> supplier) {
+    private void addInedibleMenusByCoachName(String coachName, Coaches coaches) {
+        List<String> inedibleMenus = inputView.readInedibleMenus(coachName);
+        coaches.addInedibleMenuByName(coachName, inedibleMenus);
+    }
+
+    private void retryUntilValid(Runnable action) {
+        while (true) {
+            try {
+                action.run();
+                return;
+            } catch (IllegalArgumentException | IllegalStateException e) {
+                outputView.printError(e.getMessage());
+            }
+        }
+    }
+
+    private <T> T retrySupplierUntilValid(Supplier<T> supplier) {
         while (true) {
             try {
                 return supplier.get();
