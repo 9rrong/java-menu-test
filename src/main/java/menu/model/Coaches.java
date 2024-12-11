@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 public class Coaches {
 
+    private static final int MENU_QUANTITY_MAX_SIZE = 2;
+
     private final List<Coach> coaches;
 
     private Coaches(List<Coach> coaches) {
@@ -27,9 +29,17 @@ public class Coaches {
     }
 
     public void addInedibleMenuByName(String name, List<String> menus) {
+        validateNumberOfMenus(menus);
+
         coaches.stream()
                 .filter(coach -> coach.isName(name))
                 .forEach(coach -> coach.addInedibleMenus(menus));
+    }
+
+    private void validateNumberOfMenus(List<String> menus) {
+        if (menus.size() > MENU_QUANTITY_MAX_SIZE) {
+            throw new IllegalArgumentException(ErrorCode.MENU_QUANTITY_OUT_OF_RANGE.getMessage());
+        }
     }
 
     private void validateNumberOfCoaches(List<Coach> coaches) {
