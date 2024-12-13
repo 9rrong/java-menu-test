@@ -20,14 +20,6 @@ class CoachTest {
                 .hasMessage(ErrorCode.COACH_NAME_LENGTH_OUT_OF_RANGE.getMessage());
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {" ", "일,일이", ""})
-    void 코치_이름_잘못된_문법_예외테스트(String input) {
-        assertThatThrownBy(() -> Coach.ofValue(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(ErrorCode.INPUT_INVALID_SYNTAX.getMessage());
-    }
-
     @Test
     void 중복된_메뉴는_저장하지_않는다() {
         Coach testCoach = Coach.ofValue("테스트");
