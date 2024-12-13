@@ -1,6 +1,7 @@
-package menu.model;
+package menu.model.category;
 
 import camp.nextstep.edu.missionutils.Randoms;
+import menu.model.DayOfWeek;
 
 import java.util.ArrayList;
 import java.util.Arrays;

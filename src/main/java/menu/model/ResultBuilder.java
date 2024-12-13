@@ -1,43 +1,53 @@
 package menu.model;
 
+import menu.model.category.Categories;
+import menu.model.category.Category;
 import menu.model.coach.Coaches;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ResultBuilder {
-    private final List<String> result = new ArrayList<>();
 
-    public List<String> buildResult(Categories categories, Coaches coaches) {
-        addDayOfWeek();
-        addCategories(categories);
-        addCoachMenus(coaches);
-
-        return result;
+    public List<String> buildMenuSummary(Categories categories, Coaches coaches) {
+        return Stream.of(
+                        formatDayOfWeek(),
+                        formatCategories(categories),
+                        formatCoachMenus(coaches)
+                )
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
     }
 
-    private void addCoachMenus(Coaches coaches) {
-        result.addAll(coaches.toCoachMenusDTOs()
+    private List<String> formatDayOfWeek() {
+        return List.of(formatString(
+                "구분",
+                Arrays.stream(DayOfWeek.values())
+                        .map(DayOfWeek::getDayName)
+                        .collect(Collectors.toUnmodifiableList()))
+        );
+    }
+
+    private List<String> formatCategories(Categories categories) {
+        return List.of(formatString(
+                "카테고리",
+                categories.getCategories()
+                        .stream()
+                        .map(Category::getCategoryName)
+                        .collect(Collectors.toUnmodifiableList())
+        ));
+    }
+
+    private List<String> formatCoachMenus(Coaches coaches) {
+        return coaches.toCoachMenusDTOs()
                 .stream()
-                .map(coachMenusDTO -> formatString(coachMenusDTO.getCoachName(), coachMenusDTO.getMenus())
-                ).collect(Collectors.toUnmodifiableList()));
+                .map(dto -> formatString(dto.getCoachName(), dto.getMenus()))
+                .collect(Collectors.toUnmodifiableList());
     }
 
-    private void addCategories(Categories categories) {
-        result.add(formatString("카테고리", categories.getCategories().stream()
-                .map(Category::getCategoryName)
-                .collect(Collectors.toUnmodifiableList())));
-    }
-
-    private void addDayOfWeek() {
-        result.add(formatString("구분", Arrays.stream(DayOfWeek.values())
-                .map(DayOfWeek::getDayName)
-                .collect(Collectors.toUnmodifiableList())));
-    }
-
-    private String formatString(String header, List<String> strings) {
-        return "[ " + header + " | " + String.join(" | ", strings) + " ]";
+    private String formatString(String header, List<String> values) {
+        return "[ " + header + " | " + String.join(" | ", values) + " ]";
     }
 }

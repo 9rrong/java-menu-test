@@ -1,8 +1,8 @@
 package menu.model.coach;
 
-import menu.model.Category;
-import menu.model.CoachMenusDTO;
 import menu.model.ErrorCode;
+import menu.model.RandomMenuSelectionStrategy;
+import menu.model.category.Category;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +33,7 @@ public class Coaches {
 
     public List<CoachMenusDTO> toCoachMenusDTOs() {
         return coaches.stream()
-                .map(Coach::coachMenusDTO)
+                .map(Coach::toCoachMenusDTO)
                 .collect(Collectors.toUnmodifiableList());
     }
 
@@ -46,7 +46,7 @@ public class Coaches {
     }
 
     public void addRandomMenusByCategory(Category category) {
-        coaches.forEach(coach -> coach.addRandomMenu(category));
+        coaches.forEach(coach -> coach.addSelectedMenu(category.getMenus(), new RandomMenuSelectionStrategy()));
     }
 
     private void validateNumberOfMenus(List<String> menus) {
@@ -56,7 +56,7 @@ public class Coaches {
     }
 
     private void validateNumberOfCoaches(List<Coach> coaches) {
-        if (!(coaches.size() >= 2) || !(coaches.size() <= 5)) {
+        if (coaches.size() < 2 || coaches.size() > 5) {
             throw new IllegalArgumentException(ErrorCode.COACHES_NUMBER_OUT_OF_RANGE.getMessage());
         }
     }

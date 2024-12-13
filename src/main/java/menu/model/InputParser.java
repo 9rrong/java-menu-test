@@ -2,19 +2,18 @@ package menu.model;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InputParser {
-    private static final String STRINGS_REGEX = "([가-힣]+)(,[가-힣]+)*";
-    private static final Pattern STRINGS_PATTERN = Pattern.compile(STRINGS_REGEX);
     private static final String STRINGS_DELIMITER = ",";
+    private static final String STRINGS_REGEX = "[가-힣a-zA-Z]+(?:" + STRINGS_DELIMITER + "[가-힣a-zA-Z]+)*";
+    private static final Pattern STRINGS_PATTERN = Pattern.compile(STRINGS_REGEX);
 
     public static List<String> convertInput(String input) {
         validateInput(input);
         List<String> inputs = parseInput(input);
-        validateDuplicatedInputs(inputs);
+        ensureNoDuplicates(inputs);
 
         return inputs;
     }
@@ -23,13 +22,9 @@ public class InputParser {
         return List.of(input.split(STRINGS_DELIMITER));
     }
 
-    private static void validateDuplicatedInputs(List<String> inputs) {
-        Set<String> uniqueInputs = new HashSet<>();
-
-        for (String input : inputs) {
-            if (!uniqueInputs.add(input)) {
-                throw new IllegalArgumentException(ErrorCode.INPUT_DUPLICATED.getMessage());
-            }
+    private static void ensureNoDuplicates(List<String> inputs) {
+        if (inputs.size() != new HashSet<>(inputs).size()) {
+            throw new IllegalArgumentException(ErrorCode.INPUT_DUPLICATED.getMessage());
         }
     }
 

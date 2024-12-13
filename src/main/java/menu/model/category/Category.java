@@ -1,4 +1,4 @@
-package menu.model;
+package menu.model.category;
 
 import java.util.Arrays;
 import java.util.List;

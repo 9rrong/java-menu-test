@@ -1,6 +1,6 @@
 package menu.controller;
 
-import menu.model.Categories;
+import menu.model.category.Categories;
 import menu.model.ResultBuilder;
 import menu.model.coach.Coaches;
 import menu.view.InputView;
@@ -35,7 +35,7 @@ public class MenuController {
         categories.getCategories()
                 .forEach(coaches::addRandomMenusByCategory);
 
-        outputView.printResult(resultBuilder.buildResult(categories, coaches));
+        outputView.printResult(resultBuilder.buildMenuSummary(categories, coaches));
         outputView.printEndMessage();
     }
 

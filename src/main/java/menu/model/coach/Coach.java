@@ -1,10 +1,8 @@
 package menu.model.coach;
 
-import camp.nextstep.edu.missionutils.Randoms;
-import menu.model.Category;
-import menu.model.CoachMenusDTO;
-import menu.model.DayOfWeek;
 import menu.model.ErrorCode;
+import menu.model.MenuSelectionStrategy;
+import menu.model.category.Category;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +14,7 @@ public class Coach {
     private final List<String> menus;
     private final List<String> inedibleMenus;
 
-    public Coach(String name, List<String> inedibleMenus) {
+    private Coach(String name, List<String> inedibleMenus) {
         this.name = name;
         this.menus = new ArrayList<>();
         this.inedibleMenus = inedibleMenus;
@@ -47,35 +45,33 @@ public class Coach {
         return name.equals(value);
     }
 
-    public void addRandomMenu(Category category) {
+    public void addSelectedMenu(List<String> menus, MenuSelectionStrategy menuSelectionStrategy) {
         while (true) {
-            String menu = Randoms.shuffle(category.getMenus()).get(0);
+            String selectedMenu = menuSelectionStrategy.select(menus);
 
-            if (checkMenu(menu)) {
-                menus.add(menu);
+            if (isMenuValid(selectedMenu)) {
+                this.menus.add(selectedMenu);
                 break;
             }
         }
     }
 
-    public CoachMenusDTO coachMenusDTO() {
+    public CoachMenusDTO toCoachMenusDTO() {
         return new CoachMenusDTO(name, menus);
     }
 
-    private boolean checkMenu(String menu) {
-        return !(isDuplicated(menu) && isInedible(menu));
+    private boolean isMenuValid(String menu) {
+        return isUnique(menu) && isEdible(menu);
     }
 
-    private boolean isInedible(String menu) {
+    private boolean isEdible(String menu) {
         return inedibleMenus.stream()
-                .anyMatch(m -> Objects.equals(m, menu));
+                .noneMatch(restricted -> Objects.equals(restricted, menu));
     }
 
-    private boolean isDuplicated(String menu) {
-        long numberOfMenu = menus.stream()
-                .filter(m -> Objects.equals(m, menu))
-                .count();
-        return numberOfMenu < 1;
+    private boolean isUnique(String menu) {
+        return menus.stream()
+                .noneMatch(selected -> Objects.equals(selected, menu));
     }
 
     private void validateMenuInputs(List<String> inedibleMenuInputs) {
